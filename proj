@@ -1,0 +1,20 @@
+#!/bin/sh
+ZIP="zip -D -r -9"
+
+case $1 in
+
+    build )
+        "$0" clean
+        pkg_name=$(cat ext/manifest.json | jq --raw-output '"\(.applications.gecko.id) \(.version)"')
+        ( cd ext ; $ZIP "../$pkg_name.zip" . ; )
+        ;;
+
+    clean )
+        rm --force *.zip
+        ;;
+
+    * )
+        echo "$0 { build | clean }"
+        ;;
+
+esac
